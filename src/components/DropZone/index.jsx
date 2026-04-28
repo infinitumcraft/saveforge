@@ -1,4 +1,3 @@
-// components/DropZone/index.jsx
 import { useState } from 'react'
 import { detectEngine } from '../../utils/detect'
 

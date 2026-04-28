@@ -1,5 +1,3 @@
-// engines/renpy/parser.js
-// Parses Ren'Py save files into a JS object
 
 import { readAsText } from '../../utils/fileUtils'
 import { unzipSync } from 'fflate'
@@ -46,39 +44,30 @@ function scanPickleValues(bytes) {
     const op = bytes[i++]
 
     switch (op) {
-      // SHORT_BINUNICODE (opcode 0x8c) — short utf8 string
       case 0x8c: {
         const len = bytes[i++]
         const str = readString(len)
         lastKeyCandidate = str
         break
       }
-
-      // BINUNICODE (opcode 0x58) — utf8 string with 4-byte length
       case 0x58: {
         const len = readInt32()
         const str = readString(len)
         lastKeyCandidate = str
         break
       }
-
-      // SHORT_BINSTRING (opcode 0x55) — latin1 string with 1-byte length
       case 0x55: {
         const len = bytes[i++]
         const str = readString(len)
         lastKeyCandidate = str
         break
       }
-
-      // BINSTRING (opcode 0x54) — latin1 string with 4-byte length
       case 0x54: {
         const len = readInt32()
         const str = readString(len)
         lastKeyCandidate = str
         break
       }
-
-      // BININT1 (opcode 0x4b) — 1-byte unsigned int
       case 0x4b: {
         const val = bytes[i++]
         if (lastKeyCandidate) {
@@ -87,8 +76,6 @@ function scanPickleValues(bytes) {
         lastKeyCandidate = null
         break
       }
-
-      // BININT2 (opcode 0x4d) — 2-byte unsigned int
       case 0x4d: {
         const val = readInt16()
         if (lastKeyCandidate) {
@@ -97,8 +84,6 @@ function scanPickleValues(bytes) {
         lastKeyCandidate = null
         break
       }
-
-      // BININT (opcode 0x4a) — 4-byte signed int
       case 0x4a: {
         const val = readInt32()
         if (lastKeyCandidate) {
@@ -107,8 +92,6 @@ function scanPickleValues(bytes) {
         lastKeyCandidate = null
         break
       }
-
-      // BINFLOAT (opcode 0x47) — 8-byte float
       case 0x47: {
         const view = new DataView(bytes.buffer, i, 8)
         const val = view.getFloat64(0, false)
@@ -119,8 +102,6 @@ function scanPickleValues(bytes) {
         lastKeyCandidate = null
         break
       }
-
-      // NEWTRUE (opcode 0x88) — boolean True
       case 0x88: {
         if (lastKeyCandidate) {
           const existing = result[lastKeyCandidate]
@@ -131,8 +112,6 @@ function scanPickleValues(bytes) {
         lastKeyCandidate = null
         break
       }
-
-      // NEWFALSE (opcode 0x89) — boolean False
       case 0x89: {
         if (lastKeyCandidate) {
           const existing = result[lastKeyCandidate]
@@ -143,14 +122,10 @@ function scanPickleValues(bytes) {
         lastKeyCandidate = null
         break
       }
-
-      // NONE (opcode 0x4e) — Python None, skip
       case 0x4e: {
         lastKeyCandidate = null
         break
       }
-
-      // INT (opcode 0x49) — ascii int, read until newline
       case 0x49: {
         const line = readLine()
         const val = parseInt(line)
@@ -160,15 +135,11 @@ function scanPickleValues(bytes) {
         lastKeyCandidate = null
         break
       }
-
-      // PERSID (opcode 0x50) — Ren'Py persistent ID, skip
       case 0x50: {
         readLine()
         lastKeyCandidate = null
         break
       }
-
-      // BINPERSID (opcode 0x51) — skip
       case 0x51: {
         lastKeyCandidate = null
         break
@@ -187,37 +158,28 @@ function scanPickleValues(bytes) {
  * @returns {Promise<object>}
  */
 export async function parse(file) {
-  // Try JSON first (some Ren'Py games save as JSON)
   try {
     const text = await readAsText(file)
     return JSON.parse(text)
   } catch {
     // not JSON, try zip + pickle
   }
-
-  // Try unzip first then pickle (default Ren'Py saves)
   try {
     const buffer = await file.arrayBuffer()
     const bytes = new Uint8Array(buffer)
 
     const unzipped = unzipSync(bytes)
     let result = {}
-
-    // Extract JSON metadata
     if (unzipped['json']) {
       const jsonText = new TextDecoder().decode(unzipped['json'])
       result = JSON.parse(jsonText)
     }
-
-    // Try extra_info (plain text label)
     if (unzipped['extra_info']) {
       const extraText = new TextDecoder().decode(unzipped['extra_info'])
       if (!extraText.includes('\x00')) {
         result['_extra_info'] = extraText
       }
     }
-
-    // Scan the log file for simple values
     const pickleBytes = unzipped['log']
     if (pickleBytes) {
       try {

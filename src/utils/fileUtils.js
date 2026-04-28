@@ -1,5 +1,3 @@
-// utils/fileUtils.js
-// Helpers for reading and writing files in the browser
 
 /**
  * Read a file as text

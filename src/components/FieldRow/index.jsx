@@ -1,5 +1,3 @@
-// components/FieldRow/index.jsx
-// Renders a single editable field row
 
 import { useState } from 'react'
 

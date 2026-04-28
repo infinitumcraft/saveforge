@@ -1,5 +1,3 @@
-// engines/generic/parser.js
-// Tries to parse any unknown file as JSON or INI
 
 import { readAsText } from '../../utils/fileUtils'
 
@@ -9,30 +7,22 @@ import { readAsText } from '../../utils/fileUtils'
  */
 export async function parse(file) {
   const text = await readAsText(file)
-
-  // Try JSON
   try {
     return JSON.parse(text)
 } catch {
   // not this format, try next
 }
-
-  // Try base64 decoded JSON
   try {
     const decoded = atob(text.trim())
     return JSON.parse(decoded)
 } catch {
   // not this format, try next
 }
-
-  // Try INI
   try {
     return parseINI(text)
 } catch {
   // not this format, try next
 }
-
-  // Last resort — return raw text wrapped in an object
   return { _raw: text }
 }
 

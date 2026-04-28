@@ -1,6 +1,3 @@
-// utils/detect.js
-// Asks each engine's detector if it recognizes the file
-// Returns the engine name as a string, or 'unknown'
 
 import { detect as detectRPGMaker } from '../engines/rpgmaker/detector'
 import { detect as detectRenpy } from '../engines/renpy/detector'

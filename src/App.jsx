@@ -1,5 +1,3 @@
-// App.jsx
-// Root component — manages app state and wires everything together
 
 import { useState } from 'react'
 import DropZone from './components/DropZone'

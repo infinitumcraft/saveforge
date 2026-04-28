@@ -1,5 +1,3 @@
-// engines/generic/exporter.js
-// Exports a JS object back to a generic format
 
 import { downloadFile, isINIStyle, serializeINI } from '../../utils/fileUtils'
 
@@ -8,20 +6,15 @@ import { downloadFile, isINIStyle, serializeINI } from '../../utils/fileUtils'
  * @param {string} filename
  */
 export function exportSave(data, filename) {
-  // If it was a raw text fallback, export as text
   if (data._raw !== undefined) {
     downloadFile(data._raw, filename, 'text/plain')
     return
   }
-
-  // If it looks like INI sections
   if (isINIStyle(data)) {
     const ini = serializeINI(data)
     downloadFile(ini, filename, 'text/plain')
     return
   }
-
-  // Default to JSON
   const json = JSON.stringify(data, null, 2)
   downloadFile(json, filename, 'application/json')
 }

@@ -1,12 +1,9 @@
-// components/RPGMakerView/index.jsx
 import { useState } from 'react'
 import { getItemName, getWeaponName, getArmorName, getActorName, getVariableName, getSwitchName } from '../../engines/rpgmaker/enricher'
 
 export default function RPGMakerView({ data, onDataChange }) {
   const [activeTab, setActiveTab] = useState('party')
   const [search, setSearch] = useState('')
-
-  // Reset search when switching tabs
   function handleTabChange(tab) {
     setActiveTab(tab)
     setSearch('')
@@ -31,8 +28,6 @@ export default function RPGMakerView({ data, onDataChange }) {
   const armors = party._armors || {}
 
   const tabs = ['party', 'actors', 'inventory', 'variables', 'switches']
-
-  // Filter helper — searches by name and value
   function matches(name, value) {
     if (!search.trim()) return true
     const q = search.toLowerCase()
@@ -114,7 +109,6 @@ export default function RPGMakerView({ data, onDataChange }) {
         <div className="rpgmaker__actors">
             {actors.map((actor, index) => {
             if (!actor || !actor._name) return null
-            // Filter by name after keeping original index
             if (!matches(getActorName(index + 1), actor._name)) return null
             const actorPath = `actors._data.${index}`
             return (

@@ -1,5 +1,3 @@
-// components/Editor/index.jsx
-// Renders the full editor panel for a loaded save file
 
 import { useState } from 'react'
 import FieldRow from '../FieldRow'
@@ -151,8 +149,6 @@ function renderObject(obj, path, onChange, search = '') {
         </div>
       )
     }
-
-    // Filter by name or value
     if (search.trim()) {
       const q = search.toLowerCase()
       if (

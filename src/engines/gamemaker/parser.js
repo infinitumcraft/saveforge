@@ -1,5 +1,3 @@
-// engines/gamemaker/parser.js
-// Parses GameMaker save files into a JS object
 
 import { readAsText } from '../../utils/fileUtils'
 
@@ -9,15 +7,11 @@ import { readAsText } from '../../utils/fileUtils'
  */
 export async function parse(file) {
   const text = await readAsText(file)
-
-  // Try JSON first (GameMaker Studio 2)
   try {
     return JSON.parse(text)
 } catch {
   // not this format, try next
 }
-
-// Try INI format (older GameMaker)
   try {
     return parseINI(text)
   } catch {

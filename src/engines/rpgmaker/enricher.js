@@ -1,6 +1,3 @@
-// engines/rpgmaker/enricher.js
-// Enriches RPG Maker save data with named fields
-// from the game's data files (Items.json, Variables.json, etc.)
 
 /**
  * Holds the loaded data files
@@ -28,7 +25,6 @@ export async function loadDataFile(file) {
   else if (name.includes('armor')) db.armors = data
   else if (name.includes('actor')) db.actors = data
   else if (name === 'system.json') {
-    // System.json contains variables and switches as arrays
     db.variables = data.variables || []
     db.switches = data.switches || []
   }
