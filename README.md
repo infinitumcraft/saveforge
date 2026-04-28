@@ -1,6 +1,6 @@
 # SaveForge 🎮
 
-A multi-engine save file editor that runs entirely in your browser. No uploads, no server — your save files never leave your machine.
+A multi-engine save file editor that runs entirely in your browser. No uploads, no server, your save files never leave your machine.
 
 ## Supported Engines
 
