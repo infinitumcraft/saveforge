@@ -15,12 +15,12 @@ A multi-engine save file editor that runs entirely in your browser. No uploads, 
 
 ## Features
 
-- 🔍 Auto-detects engine from file extension
-- ✏️ Edit fields directly in the browser
-- 💾 Export patched save file instantly
-- 🎯 RPG Maker semantic view (party, actors, inventory, variables, switches)
-- 📂 Optional data file enrichment for named variables and items
-- 🔎 Search fields by name or value
+-  Auto-detects engine from file extension
+-  Edit fields directly in the browser
+-  Export patched save file instantly
+-  RPG Maker semantic view (party, actors, inventory, variables, switches)
+-  Optional data file enrichment for named variables and items
+-  Search fields by name or value
 
 ## RPG Maker Data Enrichment
 
